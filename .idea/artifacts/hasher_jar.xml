@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="hasher.jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/hasher_jar</output-path>
-    <root id="archive" name="hasher.jar">
-      <element id="module-output" name="hasher" />
-    </root>
-  </artifact>
-</component>
