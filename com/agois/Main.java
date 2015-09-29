@@ -17,7 +17,7 @@ public class Main {
         System.out.println("Input file is " + inputFilename);
 
         int extensionIndex = inputFilename.lastIndexOf(".");
-        String outputFilename = (extensionIndex != -1 ? inputFilename.substring(0, extensionIndex) : inputFilename) + ".csv";
+        String outputFilename = (extensionIndex != -1 ? inputFilename.substring(0, extensionIndex) : inputFilename) + "-hashed.csv";
 
         BufferedReader inputStream = null;
         try {
@@ -37,7 +37,7 @@ public class Main {
 
         String line;
         try {
-            StringHasher hasher = new StringHasher();
+            TextHasher hasher = new TextHasher();
             boolean isIOS = "ios".equalsIgnoreCase(platform);
             while ((line = inputStream.readLine()) != null) {
                 String hashed = hasher.createHashedString(line);
@@ -59,34 +59,30 @@ public class Main {
         System.out.println("Success! Output is in file " + outputFilename);
     }
 
-     private static class StringHasher {
+     private static class TextHasher {
 
-         private final StringBuffer mBuffer = new StringBuffer(64);
+         private final StringBuffer mHashedBuffer = new StringBuffer(64);
 
-         public StringHasher() {
-         }
-
-         public String createHashedString(String from) {
-             mBuffer.delete(0, mBuffer.length());
+         private String createHashedString(String from) {
+             mHashedBuffer.delete(0, mHashedBuffer.length());
 
              try {
                  MessageDigest digest = MessageDigest.getInstance("MD5");
                  digest.reset();
                  byte[] data = digest.digest(from.getBytes());
 
-                 // Create Hex String
                  for (byte aData : data) {
                      String h = Integer.toHexString(0xFF & aData);
                      if (h.length() < 2) {
-                         mBuffer.append("0");
+                         mHashedBuffer.append("0");
                      }
-                     mBuffer.append(h);
+                     mHashedBuffer.append(h);
                  }
              } catch (NoSuchAlgorithmException e1) {
                  e1.printStackTrace();
              }
 
-             return mBuffer.toString();
+             return mHashedBuffer.toString();
          }
      }
 }
